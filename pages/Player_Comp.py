@@ -218,10 +218,10 @@ names_nhl = nhl_df01['Player']
 nhl_df01 = nhl_df01.drop (columns = ['Player'])
 
 
-# In[22]:
+# In[ ]:
 
 
-salaries_df = pd.read_csv('salaries.csv')
+salaries_df = dfs('salaries.csv')
 
 salaries_df = salaries_df.drop(columns = ['0', '1', '2'])
 
