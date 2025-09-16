@@ -3,7 +3,7 @@
 
 # Final Model - Restructured
 
-# In[1]:
+# In[3]:
 
 
 import pandas as pd
@@ -11,21 +11,21 @@ import numpy as np
 from unidecode import unidecode
 
 
-# In[ ]:
+# In[38]:
 
 
-df01 = pd.read_csv('../csv_files/NHL_Final-01.csv')
-df02 = pd.read_csv('../csv_files/NHL_Final-02.csv')
+df01 = pd.read_csv('csv_files/NHL_Final-01.csv')
+df02 = pd.read_csv('csv_files/NHL_Final-02.csv')
 
 
-# In[ ]:
+# In[5]:
 
 
 df02 = df02.drop(columns = ['GP', 'Pos', 'TK', 'GV', '-9999'])
 df02.head()
 
 
-# In[ ]:
+# In[6]:
 
 
 df01['Player'] = df01['Player'].apply(unidecode).str.lower().str.strip()
@@ -33,7 +33,7 @@ df02 ['Player'] = df02['Player'].apply(unidecode).str.lower().str.strip()
 df03 = pd.merge (df01, df02, how = 'left', on='Player')
 
 
-# In[ ]:
+# In[7]:
 
 
 df03 = df03.drop(df03[df03['GP'] <= 41].index).reset_index(drop = True)
@@ -47,13 +47,13 @@ df03 = df03.replace({'--': 0})
 df03 = df03.fillna(0)
 
 
-# In[ ]:
+# In[8]:
 
 
 df03.head()
 
 
-# In[ ]:
+# In[9]:
 
 
 df_final = df03.copy()
@@ -61,13 +61,13 @@ df_final.head()
 df_final = df_final.drop(columns = ['TOI/60'])
 
 
-# In[ ]:
+# In[10]:
 
 
 df_final ['TOI(EV)'] = pd.to_timedelta('00:' + df_final['TOI(EV)'].astype(str)).dt.total_seconds()/60
 
 
-# In[ ]:
+# In[11]:
 
 
 df_final = df_final.fillna(0)
@@ -75,7 +75,7 @@ df_final = df_final.replace({'--': 0})
 df_final = df_final.drop(columns = ['Age', 'Pos'])
 
 
-# In[ ]:
+# In[12]:
 
 
 df_final.head()
@@ -84,52 +84,52 @@ df_final.head()
 # In[ ]:
 
 
-df1 = pd.read_excel("../csv_files/NHL_STATS01.xlsx")
-df2 = pd.read_excel("../csv_files/NHL_STATS02.xlsx")
-df3 = pd.read_excel("../csv_files/NHL_STATS03.xlsx")
-df4 = pd.read_excel("../csv_files/NHL_STATS04.xlsx")
-df5 = pd.read_excel("../csv_files/NHL_STATS05.xlsx")
-df6 = pd.read_excel("../csv_files/NHL_STATS06.xlsx")
-df7 = pd.read_excel("../csv_files/NHL_STATS07.xlsx")
-df8 = pd.read_excel("../csv_files/NHL_STATS08.xlsx")
-df9 = pd.read_excel("../csv_files/NHL_STATS09.xlsx")
-df10 = pd.read_excel("../csv_files/NHL_STATS10.xlsx")
+df1 = pd.read_excel("csv_files/NHL_STATS01.xlsx")
+df2 = pd.read_excel("csv_files/NHL_STATS02.xlsx")
+df3 = pd.read_excel("csv_files/NHL_STATS03.xlsx")
+df4 = pd.read_excel("csv_files/NHL_STATS04.xlsx")
+df5 = pd.read_excel("csv_files/NHL_STATS05.xlsx")
+df6 = pd.read_excel("csv_files/NHL_STATS06.xlsx")
+df7 = pd.read_excel("csv_files/NHL_STATS07.xlsx")
+df8 = pd.read_excel("csv_files/NHL_STATS08.xlsx")
+df9 = pd.read_excel("csv_files/NHL_STATS09.xlsx")
+df10 = pd.read_excel("csv_files/NHL_STATS10.xlsx")
 
 df = pd.concat([df1,df2, df3, df4, df5, df6, df7, df8, df9, df10], ignore_index = True)
 
 
-# In[ ]:
+# In[14]:
 
 
 df.head()
 df_time = df[['Player', 'TOI/GP']]
 
 
-# In[ ]:
+# In[15]:
 
 
 df_time.head()
 
 
-# In[ ]:
+# In[16]:
 
 
 df_time ['TOI/GP'] = pd.to_timedelta('00:' + df_time['TOI/GP'].astype(str)).dt.total_seconds()/60
 
 
-# In[ ]:
+# In[17]:
 
 
 df_time['Player'] = df_time['Player'].apply(unidecode).str.lower().str.strip()
 
 
-# In[ ]:
+# In[18]:
 
 
 nhl_df = pd.merge(df_final, df_time, how = 'left', on = 'Player')
 
 
-# In[ ]:
+# In[19]:
 
 
 nhl_df.loc[nhl_df['Player'] == 'mitch marner', 'TOI/GP'] = 21.3167
@@ -151,14 +151,14 @@ nhl_df.loc[nhl_df['Player'] == 'pierre-olivier joseph', 'TOI/GP'] = 15.2667
 
 
 
-# In[ ]:
+# In[20]:
 
 
 nhl_df = nhl_df.drop (columns = 'SAtt.')
 nhl_df.head()
 
 
-# In[ ]:
+# In[21]:
 
 
 per_60_TOT = ['G', 'A', 'PTS', 'PIM', 'GWG', 'SOG', 'TSA', 'FOW', 'FOL', 'BLK', 'HIT', 'TAKE', 'GIVE']
@@ -181,14 +181,14 @@ for item in per_game:
     nhl_df = nhl_df.rename(columns = {item: item + '/GP'})
 
 
-# In[ ]:
+# In[22]:
 
 
 nhl_df = nhl_df.drop(columns = ['GP', 'ATOI', 'TOI(EV)', 'TOI/GP'])
 nhl_df.head()
 
 
-# In[ ]:
+# In[23]:
 
 
 nhl_df01 = nhl_df.copy()
@@ -201,7 +201,7 @@ nhl_df01 = nhl_df01.drop (columns = ['Player'])
 # In[ ]:
 
 
-salaries_df = pd.read_csv('../csv_files/salaries.csv')
+salaries_df = pd.read_csv('csv_files/salaries.csv')
 
 salaries_df = salaries_df.drop(columns = ['0', '1', '2'])
 
@@ -210,13 +210,13 @@ salaries_df['Player'] = salaries_df['Player'].apply(unidecode).str.lower().str.s
 names_df = pd.DataFrame({'Player' : names_nhl})
 
 
-# In[ ]:
+# In[25]:
 
 
 names_df = pd.merge(names_df, salaries_df, how = 'left', on = 'Player')
 
 
-# In[ ]:
+# In[26]:
 
 
 names_df.loc[names_df['Player'] == 'mitch marner', 'Salary'] = 10.903
@@ -245,13 +245,13 @@ names_df.loc[names_df['Player'] == 'oliver wahlstrom', 'Salary'] = 1.0
 
 
 
-# In[ ]:
+# In[27]:
 
 
 names_df.head()
 
 
-# In[ ]:
+# In[28]:
 
 
 from sklearn.preprocessing import StandardScaler
@@ -261,7 +261,7 @@ scale = StandardScaler()
 nhl_scaled = scale.fit_transform(nhl_df01)
 
 
-# In[ ]:
+# In[29]:
 
 
 from sklearn.neighbors import NearestNeighbors
@@ -269,7 +269,7 @@ from sklearn.neighbors import NearestNeighbors
 sim_players = NearestNeighbors(n_neighbors = 550).fit(nhl_scaled)
 
 
-# In[ ]:
+# In[30]:
 
 
 sample = 'charlie coyle'
@@ -277,32 +277,32 @@ index_pos = names_df.index.get_loc(names_df[names_df['Player'] == sample].index[
 print (index_pos)
 
 
-# In[ ]:
+# In[31]:
 
 
 result_comp = sim_players.kneighbors([nhl_scaled[241]])
 
 
-# In[ ]:
+# In[32]:
 
 
 print(names_df['Salary'].loc[185])
 
 
 
-# In[ ]:
+# In[33]:
 
 
 print(result_comp)
 
 
-# In[ ]:
+# In[34]:
 
 
 print (result_comp [1][0][1])
 
 
-# In[ ]:
+# In[35]:
 
 
 def comparables(comp_name, salary_max):
@@ -345,7 +345,7 @@ def comparables(comp_name, salary_max):
     
 
 
-# In[ ]:
+# In[36]:
 
 
 print (comparables ("brady tkachuk", 8))
