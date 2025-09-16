@@ -1,0 +1,7 @@
+[theme]
+base="dark"
+primaryColor="#FF4C29"                # accent orange
+backgroundColor="#0A192F"             # dark navy blue
+secondaryBackgroundColor="#1E293B"    # card background
+textColor="#F8FAFC"                   # light gray text
+font="sans serif"
