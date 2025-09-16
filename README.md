@@ -4,6 +4,6 @@ You can find each of the prediction models under the "pages" subfolder. They eac
 
 Here are the Streamlit links so you can access the features yourself!
 
-NHL Player Comparison Engine [https://huzayfamallick-nhl-ml-powered-a-pagescomparison-frontend-el3lic.streamlit.app/]
+[NHL Player Comparison Engine](https://huzayfamallick-nhl-ml-powered-a-pagescomparison-frontend-el3lic.streamlit.app/)
 
-ML-Powered NHL Contract Projection Model [https://huzayfamallick-nhl-ml-powered-ass-pagescontract-frontend-jetdqu.streamlit.app/]
+[ML-Powered NHL Contract Projection Model](https://huzayfamallick-nhl-ml-powered-ass-pagescontract-frontend-jetdqu.streamlit.app/)
