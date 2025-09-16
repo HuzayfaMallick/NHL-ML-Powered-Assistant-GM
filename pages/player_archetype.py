@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# Final Model - Restructured
-
-# In[1]:
+# In[154]:
 
 
 import pandas as pd
@@ -38,14 +36,14 @@ df01 = dfs('NHL_Final-01.csv')
 df02 = dfs('NHL_Final-02.csv')
 
 
-# In[3]:
+# In[156]:
 
 
 df02 = df02.drop(columns = ['GP', 'Pos', 'TK', 'GV', '-9999'])
 df02.head()
 
 
-# In[4]:
+# In[157]:
 
 
 df01['Player'] = df01['Player'].apply(unidecode).str.lower().str.strip()
@@ -53,7 +51,7 @@ df02 ['Player'] = df02['Player'].apply(unidecode).str.lower().str.strip()
 df03 = pd.merge (df01, df02, how = 'left', on='Player')
 
 
-# In[5]:
+# In[158]:
 
 
 df03 = df03.drop(df03[df03['GP'] <= 41].index).reset_index(drop = True)
@@ -67,13 +65,13 @@ df03 = df03.replace({'--': 0})
 df03 = df03.fillna(0)
 
 
-# In[6]:
+# In[159]:
 
 
 df03.head()
 
 
-# In[7]:
+# In[160]:
 
 
 df_final = df03.copy()
@@ -81,13 +79,13 @@ df_final.head()
 df_final = df_final.drop(columns = ['TOI/60'])
 
 
-# In[8]:
+# In[161]:
 
 
 df_final ['TOI(EV)'] = pd.to_timedelta('00:' + df_final['TOI(EV)'].astype(str)).dt.total_seconds()/60
 
 
-# In[9]:
+# In[162]:
 
 
 df_final = df_final.fillna(0)
@@ -95,7 +93,7 @@ df_final = df_final.replace({'--': 0})
 df_final = df_final.drop(columns = ['Age', 'Pos'])
 
 
-# In[10]:
+# In[163]:
 
 
 df_final.head()
@@ -118,38 +116,38 @@ df10 = dfs("NHL_STATS10.xlsx")
 df = pd.concat([df1,df2, df3, df4, df5, df6, df7, df8, df9, df10], ignore_index = True)
 
 
-# In[12]:
+# In[165]:
 
 
 df.head()
 df_time = df[['Player', 'TOI/GP']]
 
 
-# In[13]:
+# In[166]:
 
 
 df_time.head()
 
 
-# In[14]:
+# In[167]:
 
 
 df_time ['TOI/GP'] = pd.to_timedelta('00:' + df_time['TOI/GP'].astype(str)).dt.total_seconds()/60
 
 
-# In[15]:
+# In[168]:
 
 
 df_time['Player'] = df_time['Player'].apply(unidecode).str.lower().str.strip()
 
 
-# In[16]:
+# In[169]:
 
 
 nhl_df = pd.merge(df_final, df_time, how = 'left', on = 'Player')
 
 
-# In[17]:
+# In[170]:
 
 
 nhl_df.loc[nhl_df['Player'] == 'mitch marner', 'TOI/GP'] = 21.3167
@@ -171,14 +169,14 @@ nhl_df.loc[nhl_df['Player'] == 'pierre-olivier joseph', 'TOI/GP'] = 15.2667
 
 
 
-# In[18]:
+# In[171]:
 
 
 nhl_df = nhl_df.drop (columns = 'SAtt.')
 nhl_df.head()
 
 
-# In[19]:
+# In[172]:
 
 
 per_60_TOT = ['G', 'A', 'PTS', 'PIM', 'GWG', 'SOG', 'TSA', 'FOW', 'FOL', 'BLK', 'HIT', 'TAKE', 'GIVE']
@@ -201,174 +199,131 @@ for item in per_game:
     nhl_df = nhl_df.rename(columns = {item: item + '/GP'})
 
 
-# In[20]:
+# In[173]:
 
 
 nhl_df = nhl_df.drop(columns = ['GP', 'ATOI', 'TOI(EV)', 'TOI/GP'])
 nhl_df.head()
 
 
-# In[21]:
+# In[174]:
 
 
-nhl_df01 = nhl_df.copy()
-
-names_nhl = nhl_df01['Player']
-
-nhl_df01 = nhl_df01.drop (columns = ['Player'])
+name_list = nhl_df['Player']
+finalNHL_df = nhl_df.drop(columns = 'Player')
+finalNHL_df.head()
 
 
-# In[22]:
-
-
-salaries_df = pd.read_csv('salaries.csv')
-
-salaries_df = salaries_df.drop(columns = ['0', '1', '2'])
-
-salaries_df['Player'] = salaries_df['Player'].apply(unidecode).str.lower().str.strip()
-
-names_df = pd.DataFrame({'Player' : names_nhl})
-
-
-# In[23]:
-
-
-names_df = pd.merge(names_df, salaries_df, how = 'left', on = 'Player')
-
-
-# In[24]:
-
-
-names_df.loc[names_df['Player'] == 'mitch marner', 'Salary'] = 10.903
-names_df.loc[names_df['Player'] == 'jj peterka', 'Salary'] = 0.855834
-names_df.loc[names_df['Player'] == 'matthew coronato', 'Salary'] = 0.925 
-names_df.loc[names_df['Player'] == 'william cuylle', 'Salary'] = 0.828333
-names_df.loc[names_df['Player'] == 'zachary bolduc', 'Salary'] = 0.863334
-names_df.loc[names_df['Player'] == 'michael anderson', 'Salary'] = 4.125
-names_df.loc[names_df['Player'] == 'emil martinsen lilleberg', 'Salary'] = 0.87
-names_df.loc[names_df['Player'] == 'chris tanev', 'Salary'] = 4.5
-names_df.loc[names_df['Player'] == 'alexey toropchenko', 'Salary'] = 1.25
-names_df.loc[names_df['Player'] == 'fedor svechkov', 'Salary'] = 0.925
-names_df.loc[names_df['Player'] == 'joe veleno', 'Salary'] = 0.9
-names_df.loc[names_df['Player'] == 'egor zamula', 'Salary'] = 1.7
-names_df.loc[names_df['Player'] == 'j.j. moser', 'Salary'] = 3.375
-names_df.loc[names_df['Player'] == 'artem zub', 'Salary'] = 4.6
-names_df.loc[names_df['Player'] == 't.j. brodie', 'Salary'] = 0.775
-names_df.loc[names_df['Player'] == 'mathew dumba', 'Salary'] = 3.75
-names_df.loc[names_df['Player'] == 'marc del gaizo', 'Salary'] = 0.775
-names_df.loc[names_df['Player'] == 'emil andrae', 'Salary'] = 0.903
-names_df.loc[names_df['Player'] == 'jonathon merrill', 'Salary'] = 1.2
-names_df.loc[names_df['Player'] == 'devin shore', 'Salary'] = 0.775
-names_df.loc[names_df['Player'] == 'zack ostapchuk', 'Salary'] = 0.825
-names_df.loc[names_df['Player'] == 'matty beniers', 'Salary'] = 7.142857
-names_df.loc[names_df['Player'] == 'oliver wahlstrom', 'Salary'] = 1.0
-
-
-
-# In[25]:
-
-
-names_df.head()
-
-
-# In[26]:
+# In[175]:
 
 
 from sklearn.preprocessing import StandardScaler
 
 scale = StandardScaler()
 
-nhl_scaled = scale.fit_transform(nhl_df01)
+finalNHL_df = scale.fit_transform(finalNHL_df)
 
 
-# In[27]:
+# In[176]:
 
 
-from sklearn.neighbors import NearestNeighbors
+from sklearn.cluster import KMeans
 
-sim_players = NearestNeighbors(n_neighbors = 550).fit(nhl_scaled)
+kmeans_nhl = KMeans(n_clusters = 12, random_state = 42)
 
-
-# In[28]:
-
-
-sample = 'charlie coyle'
-index_pos = names_df.index.get_loc(names_df[names_df['Player'] == sample].index[0])
-print (index_pos)
+cluster = kmeans_nhl.fit(finalNHL_df)
 
 
-# In[29]:
+# In[177]:
 
 
-result_comp = sim_players.kneighbors([nhl_scaled[241]])
+print (kmeans_nhl.labels_)
 
 
-# In[30]:
+# In[178]:
 
 
-print(names_df['Salary'].loc[185])
+nhl_df['Clusters'] = kmeans_nhl.labels_
+
+
+# In[179]:
+
+
+nhl_df
+
+
+# In[180]:
+
+
+nhl_df
+
+
+# In[181]:
+
+
+for cluster_id in sorted(nhl_df["Clusters"].unique()):
+    print(f"\nCluster {cluster_id}:")
+    players_in_cluster = nhl_df[nhl_df["Clusters"] == cluster_id]["Player"].tolist()
+    print(players_in_cluster)
+
+
+# In[182]:
+
+
+cluster_centroid = kmeans_nhl.cluster_centers_
+
+centroid_df = pd.DataFrame(cluster_centroid, columns = nhl_df.drop(columns = ['Player', 'Clusters']).columns)
 
 
 
-# In[31]:
+# In[183]:
 
 
-print(result_comp)
+centroid_df
 
 
-# In[32]:
+# In[210]:
 
 
-print (result_comp [1][0][1])
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
+
+# Reduce to 2D
+pca = PCA(n_components=2)
+reduced = pca.fit_transform(finalNHL_df)
+
+nhl_df["PCA1"] = reduced[:,0]
+nhl_df["PCA2"] = reduced[:,1]
+
+# Plot
+plt.figure(figsize=(10,7))
+for cluster_id in nhl_df["Clusters"].unique():
+    cluster_data = nhl_df[nhl_df["Clusters"] == cluster_id]
+    plt.scatter(cluster_data["PCA1"], cluster_data["PCA2"], label=f"Clusters {cluster_id}", alpha=0.6)
+
+plt.legend()
+plt.title("Player Archetypes (KMeans + PCA)")
+plt.xlabel("PCA1")
+plt.ylabel("PCA2")
+plt.show()
 
 
-# In[33]:
+# In[ ]:
 
 
-def comparables(comp_name, salary_max):
-
-    #retrives position of comparison player in original array
-    position = names_df.index.get_loc(names_df[names_df['Player'] == comp_name].index[0])
-
-    #creates an array to score the most comparable players to the requested comparison
-    comp_array = sim_players.kneighbors([nhl_scaled[position]])
-
-    #variable assignment
-    index = 1
-    player_count = 0
-    final_dict = {
-        "name": [],
-        "salary": [], 
-        "similar_score": []
-        }
-    
-
-    #for loop 
-    for i in range(595): 
-
-        #stores position of comparable
-        pos_comp = comp_array[1][0][index]
-
-        if names_df['Salary'].loc[pos_comp] <= salary_max:
-
-            final_dict["name"].append(names_df['Player'].loc[pos_comp])
-            final_dict["salary"].append(names_df['Salary'].loc[pos_comp].round(4))
-            final_dict["similar_score"].append(comp_array[0][0][index].round(4))
-
-            player_count += 1
-            
-        index += 1
-
-        if player_count == 3:
-            return final_dict
-    
-    
 
 
-# In[34]:
+
+# In[ ]:
 
 
-print (comparables ("brady tkachuk", 8))
+
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:
