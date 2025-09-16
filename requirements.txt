@@ -6,3 +6,4 @@ unidecode
 matplotlib
 seaborn
 plotly
+openpyxl
