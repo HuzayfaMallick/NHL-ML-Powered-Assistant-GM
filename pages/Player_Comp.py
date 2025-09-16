@@ -34,8 +34,8 @@ for file in data_files:
 # In[ ]:
 
 
-df01 = dfs('NHL_Final-01.csv')
-df02 = dfs('NHL_Final-02.csv')
+df01 = dfs['NHL_Final-01.csv']
+df02 = dfs['NHL_Final-02.csv']
 
 
 # In[3]:
@@ -104,16 +104,16 @@ df_final.head()
 # In[ ]:
 
 
-df1 = dfs("NHL_STATS01.xlsx")
-df2 = dfs("NHL_STATS02.xlsx")
-df3 = dfs("NHL_STATS03.xlsx")
-df4 = dfs("NHL_STATS04.xlsx")
-df5 = dfs("NHL_STATS05.xlsx")
-df6 = dfs("NHL_STATS06.xlsx")
-df7 = dfs("NHL_STATS07.xlsx")
-df8 = dfs("NHL_STATS08.xlsx")
-df9 = dfs("NHL_STATS09.xlsx")
-df10 = dfs("NHL_STATS10.xlsx")
+df1 = dfs["NHL_STATS01.xlsx"]
+df2 = dfs["NHL_STATS02.xlsx"]
+df3 = dfs["NHL_STATS03.xlsx"]
+df4 = dfs["NHL_STATS04.xlsx"]
+df5 = dfs["NHL_STATS05.xlsx"]
+df6 = dfs["NHL_STATS06.xlsx"]
+df7 = dfs["NHL_STATS07.xlsx"]
+df8 = dfs["NHL_STATS08.xlsx"]
+df9 = dfs["NHL_STATS09.xlsx"]
+df10 = dfs["NHL_STATS10.xlsx"]
 
 df = pd.concat([df1,df2, df3, df4, df5, df6, df7, df8, df9, df10], ignore_index = True)
 
@@ -221,7 +221,7 @@ nhl_df01 = nhl_df01.drop (columns = ['Player'])
 # In[ ]:
 
 
-salaries_df = dfs('salaries.csv')
+salaries_df = dfs['salaries.csv']
 
 salaries_df = salaries_df.drop(columns = ['0', '1', '2'])
 
