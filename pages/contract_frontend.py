@@ -44,5 +44,5 @@ st.write ("The top 15 stats account for 86 percent of the model's accuracy. Ther
 
 st.write("The picture below shows a plot summarizing the importance of each feature using SHAP: ")
 
-st.image("SHAP_NHL.png", use_container_width=True)
+st.image("SHAP_nhl.png", use_container_width=True)
 
