@@ -1,7 +1,7 @@
 streamlit
 shap
-pandas
 numpy
+pandas
 scikit-learn
 unidecode
 matplotlib
