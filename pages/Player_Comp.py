@@ -27,7 +27,7 @@ for file in data_files:
     file_path = os.path.join(data_folder, file)
     if file.endswith('.csv'):
         dfs[file] = pd.read_csv(file_path)
-    elif file.endswith('.xlsx'):
+    else:
         dfs[file] = pd.read_excel(file_path, engine='openpyxl')
 
 
