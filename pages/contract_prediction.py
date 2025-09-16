@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[7]:
 
 
 import pandas as pd
@@ -9,41 +9,21 @@ import numpy as np
 from unidecode import unidecode
 
 
-# In[ ]:
+# In[8]:
 
 
-import os
-
-root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-
-data_folder = os.path.join(root_dir, 'csv_files')
-
-data_files = [f for f in os.listdir(data_folder) if f.endswith(('.csv', '.xlsx'))]
-
-dfs = {}
-for file in data_files:
-    file_path = os.path.join(data_folder, file)
-    if file.endswith('.csv'):
-        dfs[file] = pd.read_csv(file_path)
-    elif file.endswith('.xlsx'):
-        dfs[file] = pd.read_excel(file_path, engine='openpyxl')
+df01 = pd.read_csv('../csv_files/NHL_Final-01.csv')
+df02 = pd.read_csv('../csv_files/NHL_Final-02.csv')
 
 
-# In[ ]:
-
-
-df01 = dfs['NHL_Final-01.csv']
-df02 = dfs['NHL_Final-02.csv']
-
-
-# In[3]:
+# In[9]:
 
 
 df02 = df02.drop(columns = ['GP', 'Pos', 'TK', 'GV', '-9999'])
 df02.head()
 
 
-# In[4]:
+# In[10]:
 
 
 df01['Player'] = df01['Player'].apply(unidecode).str.lower().str.strip()
@@ -51,7 +31,7 @@ df02 ['Player'] = df02['Player'].apply(unidecode).str.lower().str.strip()
 df03 = pd.merge (df01, df02, how = 'left', on='Player')
 
 
-# In[5]:
+# In[11]:
 
 
 df03 = df03.drop(df03[df03['GP'] <= 41].index).reset_index(drop = True)
@@ -65,13 +45,13 @@ df03 = df03.replace({'--': 0})
 df03 = df03.fillna(0)
 
 
-# In[6]:
+# In[12]:
 
 
 df03.head()
 
 
-# In[7]:
+# In[13]:
 
 
 df_final = df03.copy()
@@ -79,13 +59,13 @@ df_final.head()
 df_final = df_final.drop(columns = ['TOI/60'])
 
 
-# In[8]:
+# In[14]:
 
 
 df_final ['TOI(EV)'] = pd.to_timedelta('00:' + df_final['TOI(EV)'].astype(str)).dt.total_seconds()/60
 
 
-# In[9]:
+# In[15]:
 
 
 df_final = df_final.fillna(0)
@@ -93,61 +73,61 @@ df_final = df_final.replace({'--': 0})
 df_final = df_final.drop(columns = ['Pos'])
 
 
-# In[10]:
+# In[16]:
 
 
 df_final.head()
 
 
-# In[ ]:
+# In[17]:
 
 
-df1 = dfs["NHL_STATS01.xlsx"]
-df2 = dfs["NHL_STATS02.xlsx"]
-df3 = dfs["NHL_STATS03.xlsx"]
-df4 = dfs["NHL_STATS04.xlsx"]
-df5 = dfs["NHL_STATS05.xlsx"]
-df6 = dfs["NHL_STATS06.xlsx"]
-df7 = dfs["NHL_STATS07.xlsx"]
-df8 = dfs["NHL_STATS08.xlsx"]
-df9 = dfs["NHL_STATS09.xlsx"]
-df10 = dfs["NHL_STATS10.xlsx"]
+df1 = pd.read_excel("../csv_files/NHL_STATS01.xlsx")
+df2 = pd.read_excel("../csv_files/NHL_STATS02.xlsx")
+df3 = pd.read_excel("../csv_files/NHL_STATS03.xlsx")
+df4 = pd.read_excel("../csv_files/NHL_STATS04.xlsx")
+df5 = pd.read_excel("../csv_files/NHL_STATS05.xlsx")
+df6 = pd.read_excel("../csv_files/NHL_STATS06.xlsx")
+df7 = pd.read_excel("../csv_files/NHL_STATS07.xlsx")
+df8 = pd.read_excel("../csv_files/NHL_STATS08.xlsx")
+df9 = pd.read_excel("../csv_files/NHL_STATS09.xlsx")
+df10 = pd.read_excel("../csv_files/NHL_STATS10.xlsx")
 
 df = pd.concat([df1,df2, df3, df4, df5, df6, df7, df8, df9, df10], ignore_index = True)
 
 
-# In[12]:
+# In[18]:
 
 
 df.head()
 df_time = df[['Player', 'TOI/GP']]
 
 
-# In[13]:
+# In[19]:
 
 
 df_time.head()
 
 
-# In[14]:
+# In[20]:
 
 
 df_time ['TOI/GP'] = pd.to_timedelta('00:' + df_time['TOI/GP'].astype(str)).dt.total_seconds()/60
 
 
-# In[15]:
+# In[21]:
 
 
 df_time['Player'] = df_time['Player'].apply(unidecode).str.lower().str.strip()
 
 
-# In[16]:
+# In[22]:
 
 
 nhl_df = pd.merge(df_final, df_time, how = 'left', on = 'Player')
 
 
-# In[17]:
+# In[23]:
 
 
 nhl_df.loc[nhl_df['Player'] == 'mitch marner', 'TOI/GP'] = 21.3167
@@ -169,14 +149,14 @@ nhl_df.loc[nhl_df['Player'] == 'pierre-olivier joseph', 'TOI/GP'] = 15.2667
 
 
 
-# In[18]:
+# In[24]:
 
 
 nhl_df = nhl_df.drop (columns = 'SAtt.')
 nhl_df.head()
 
 
-# In[19]:
+# In[25]:
 
 
 per_60_TOT = ['G', 'A', 'PTS', 'PIM', 'GWG', 'SOG', 'TSA', 'FOW', 'FOL', 'BLK', 'HIT', 'TAKE', 'GIVE']
@@ -199,24 +179,24 @@ for item in per_game:
     nhl_df = nhl_df.rename(columns = {item: item + '/GP'})
 
 
-# In[20]:
+# In[26]:
 
 
 nhl_df = nhl_df.drop(columns = ['GP', 'ATOI', 'TOI(EV)', 'TOI/GP'])
 nhl_df.head()
 
 
-# In[ ]:
+# In[27]:
 
 
-salaries_df = dfs['salaries.csv']
+salaries_df = pd.read_csv('../csv_files/salaries.csv')
 salaries_df = salaries_df.drop(columns = ['0', '1', '2'])
 salaries_df['Player'] = salaries_df['Player'].apply(unidecode).str.lower().str.strip()
 
 nhl_df = pd.merge(nhl_df, salaries_df, how = 'left', on = 'Player')
 
 
-# In[22]:
+# In[28]:
 
 
 nhl_df.loc[nhl_df['Player'] == 'mitch marner', 'Salary'] = 10.903
@@ -244,13 +224,13 @@ nhl_df.loc[nhl_df['Player'] == 'matty beniers', 'Salary'] = 7.142857
 nhl_df.loc[nhl_df['Player'] == 'oliver wahlstrom', 'Salary'] = 1.0
 
 
-# In[23]:
+# In[29]:
 
 
 nhl_df.head()
 
 
-# In[24]:
+# In[30]:
 
 
 names_list = nhl_df['Player']
@@ -265,13 +245,13 @@ X = FinalNhl_df.drop(columns = {'Salary'})
 y = nhl_df['Salary']
 
 
-# In[25]:
+# In[31]:
 
 
 X_train, X_test, y_train, y_test = train_test_split(X,y,test_size = 0.2, random_state = 42) 
 
 
-# In[26]:
+# In[32]:
 
 
 from sklearn.preprocessing import StandardScaler
@@ -282,7 +262,7 @@ X_train = scale_factor.fit_transform(X_train)
 X_test = scale_factor.transform(X_test)
 
 
-# In[27]:
+# In[33]:
 
 
 from sklearn.ensemble import RandomForestRegressor
@@ -292,19 +272,19 @@ predictor = RandomForestRegressor(n_estimators=500, random_state = 42)
 predictor.fit(X_train, y_train)
 
 
-# In[28]:
+# In[34]:
 
 
 salary_prediction = predictor.predict(X_test)
 
 
-# In[29]:
+# In[35]:
 
 
 print (salary_prediction)
 
 
-# In[30]:
+# In[36]:
 
 
 import shap
@@ -316,13 +296,13 @@ shap_values = explainer.shap_values(X_train)
 shap.summary_plot(shap_values, X_train, plot_type = 'bar')
 
 
-# In[31]:
+# In[37]:
 
 
 print (FinalNhl_df.columns)
 
 
-# In[32]:
+# In[38]:
 
 
 feature_names = [f"Feature {i}" for i in range(X_train.shape[1])]
@@ -338,7 +318,7 @@ importance_df["cumulative_importance"] = importance_df["perc_importance"].cumsum
 print(importance_df.head(15))
 
 
-# In[33]:
+# In[39]:
 
 
 nhl_guess = pd.DataFrame([(nhl_df.drop(columns = ['Player'])).mean()])
@@ -349,7 +329,7 @@ avg_reset = avg_reset.rename(columns={avg_reset.columns[26]: 'CF%_rel'})
 nhl_guess.head()
 
 
-# In[34]:
+# In[40]:
 
 
 print(FinalNhl_df.columns[11])
@@ -369,7 +349,7 @@ print(FinalNhl_df.columns[28])
 print(FinalNhl_df.columns[15])
 
 
-# In[35]:
+# In[41]:
 
 
 #contract_prediction_avg = predictor.predict(nhl_guess)
@@ -377,13 +357,13 @@ print(FinalNhl_df.columns[15])
 #print(contract_prediction_avg)
 
 
-# In[36]:
+# In[42]:
 
 
 nhl_guess = nhl_guess.rename(columns={nhl_guess.columns[26]: 'CF%_rel'})
 
 
-# In[37]:
+# In[43]:
 
 
 def contract_predictor (pp_gp, age, oiSH, pts_60, ff_60, ppg_gp, blk_60, oiSV, e_plus, give_60, cf_60, plus_minus, cf_rel, FA_60, TSA_60):
@@ -400,7 +380,7 @@ def contract_predictor (pp_gp, age, oiSH, pts_60, ff_60, ppg_gp, blk_60, oiSV, e
     return predictor.predict(train_model)
 
 
-# In[39]:
+# In[44]:
 
 
 row = nhl_df.loc[4]
