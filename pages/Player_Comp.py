@@ -11,11 +11,11 @@ import numpy as np
 from unidecode import unidecode
 
 
-# In[38]:
+# In[ ]:
 
 
-df01 = pd.read_csv('csv_files/NHL_Final-01.csv')
-df02 = pd.read_csv('csv_files/NHL_Final-02.csv')
+df01 = pd.read_csv('pages/csv_files/NHL_Final-01.csv')
+df02 = pd.read_csv('pages/csv_files/NHL_Final-02.csv')
 
 
 # In[5]:
@@ -84,16 +84,16 @@ df_final.head()
 # In[ ]:
 
 
-df1 = pd.read_excel("csv_files/NHL_STATS01.xlsx")
-df2 = pd.read_excel("csv_files/NHL_STATS02.xlsx")
-df3 = pd.read_excel("csv_files/NHL_STATS03.xlsx")
-df4 = pd.read_excel("csv_files/NHL_STATS04.xlsx")
-df5 = pd.read_excel("csv_files/NHL_STATS05.xlsx")
-df6 = pd.read_excel("csv_files/NHL_STATS06.xlsx")
-df7 = pd.read_excel("csv_files/NHL_STATS07.xlsx")
-df8 = pd.read_excel("csv_files/NHL_STATS08.xlsx")
-df9 = pd.read_excel("csv_files/NHL_STATS09.xlsx")
-df10 = pd.read_excel("csv_files/NHL_STATS10.xlsx")
+df1 = pd.read_excel("pages/csv_files/NHL_STATS01.xlsx")
+df2 = pd.read_excel("pages/csv_files/NHL_STATS02.xlsx")
+df3 = pd.read_excel("pages/csv_files/NHL_STATS03.xlsx")
+df4 = pd.read_excel("pages/csv_files/NHL_STATS04.xlsx")
+df5 = pd.read_excel("pages/csv_files/NHL_STATS05.xlsx")
+df6 = pd.read_excel("pages/csv_files/NHL_STATS06.xlsx")
+df7 = pd.read_excel("pages/csv_files/NHL_STATS07.xlsx")
+df8 = pd.read_excel("pages/csv_files/NHL_STATS08.xlsx")
+df9 = pd.read_excel("pages/csv_files/NHL_STATS09.xlsx")
+df10 = pd.read_excel("pages/csv_files/NHL_STATS10.xlsx")
 
 df = pd.concat([df1,df2, df3, df4, df5, df6, df7, df8, df9, df10], ignore_index = True)
 
@@ -201,7 +201,7 @@ nhl_df01 = nhl_df01.drop (columns = ['Player'])
 # In[ ]:
 
 
-salaries_df = pd.read_csv('csv_files/salaries.csv')
+salaries_df = pd.read_csv('pages/csv_files/salaries.csv')
 
 salaries_df = salaries_df.drop(columns = ['0', '1', '2'])
 
