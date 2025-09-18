@@ -302,10 +302,34 @@ print(result_comp)
 print (result_comp [1][0][1])
 
 
-# In[35]:
+# In[ ]:
 
 
 def comparables(comp_name, salary_max):
+
+    import fuzzy
+
+    comp_name = unidecode(comp_name).lower().strip()
+
+    soundex = fuzzy.Soundex(4)
+
+    player_code = soundex(comp_name)
+
+    code_list = []
+
+    for name in names_df['Player']:
+        name_code = soundex(name)
+        code_list.append((name,name_code))
+
+    name_match = []
+
+    for name, code in code_list:
+        if code == player_code:
+            name_match.append(name)
+
+    if name_match:
+        comp_name = name_match[0]
+
 
     #retrives position of comparison player in original array
     position = names_df.index.get_loc(names_df[names_df['Player'] == comp_name].index[0])
